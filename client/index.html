@@ -7,14 +7,29 @@
 
     <!-- dependencies -->
     <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
     <!-- your scripts -->
     <script src="scripts/config.js"></script>
     <script src="scripts/app.js"></script>
   </head>
   <body>
+
+    <script>
+    $(document).ready(function() {
+
+      $("button").on("click", function() {
+        app.fetch();
+        console.log(app.fetch());
+      });
+
+    });
+    </script>
+
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
+      <button class="fetch">Receive</button>
+      <ul id="chats"></ul>
     </div>
   </body>
 </html>
