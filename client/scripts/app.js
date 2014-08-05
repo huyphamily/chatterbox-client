@@ -1,11 +1,14 @@
 // YOUR CODE HERE:
 var app = {
+
   server: 'https://api.parse.com/1/classes/chatterbox',
+
   init: function(){},
+
   send: function(message){
     $.ajax({
       // always use this url
-      url: this.server,
+      url: app.server,
       type: 'POST',
       data: JSON.stringify(message),
       contentType: 'application/json',
@@ -18,19 +21,22 @@ var app = {
       }
     });
   },
+
   fetch: function(){
     $.ajax({
-      url: this.server,
+      url: app.server,
       type: 'GET',
       data: {
-        limit: 20,
+        limit: 300,
         order: "-createdAt"
       },
       contentType: 'application/json',
       success: function (data) {
-        // console.log(data);
-        for(var i = 0; i < data.results.length; i++){
-          $("#chats").append("<li>" + data.results[i].text + "</li>");
+        var message = data.results;
+        for(var i = 0; i < message.length; i++){
+          message[i].username = app.tagCheck(message[i].username);
+          message[i].text = app.tagCheck(message[i].text);
+          $("#chats").append("<li>" + "<h3><b>" + message[i].username + ": </b></h3> " + message[i].text + "</li>");
         }
        },
        error: function (data) {
@@ -39,45 +45,30 @@ var app = {
        }
     });
   },
+
+  //check for script tags that can break your chat
+  tagCheck: function(input){
+    if(typeof input === "string"){
+      var tagPosition = input.search("<script>");
+      if( tagPosition !== -1 ){
+        input = input.replace("<script>", "");
+        input = input.replace("</script>", "");
+      }
+      for(var i = 0; i < input.length; i++){
+        var character = input.charCodeAt(i);
+        if(character > 222){
+          input = input.replace(input[i], "");
+        }
+      }
+      return input;
+    }
+  },
+
   clearMessages: function(){
+    $("#chats").children().remove();
   }
 };
 
-// $.get('https://api.parse.com/1/classes/chatterbox',
-//   function(){
-//     console.log(d);
-//   }
-// );
-
-// function (e,r,i,o){
-//   return b.isFunction(r)&&(o=o||i,i=r,r=t),
-//   b.ajax(
-//     {url:e,
-//       type:n,
-//       dataType:o,
-//       data:function(r),
-//       success:i
-//     })} 
-
-
 /*
-$.getJSON("https://api.parse.com/1/classes/chats?order=createdAt",
-              function(data){
-                  var message = [];
-                for(i=0; i < 10; i++) {
-                  message[i] = data.results[i].text 
-                }  
-                var x = 0  
-                  setInterval(function(){
-                      display(message[x])
-                      x++
-                        if (x === 10){
-                        x = 0}                  
-                  }, 3000); 
-
-
-                  var display = function(string){
-              $(".messages").append("<li>" + string + "</li>")
-          };    
 
 */

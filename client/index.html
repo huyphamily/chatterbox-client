@@ -16,19 +16,18 @@
 
     <script>
     $(document).ready(function() {
-
-      $("button").on("click", function() {
+      app.fetch();
+      setInterval(function(){
+        app.clearMessages();
         app.fetch();
-        console.log(app.fetch());
-      });
-
+      }, 15000);
     });
     </script>
 
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
-      <button class="fetch">Receive</button>
+      <input class="draft" type="text"> <button class="send">Send</button>
       <ul id="chats"></ul>
     </div>
   </body>
