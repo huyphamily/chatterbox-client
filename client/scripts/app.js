@@ -34,9 +34,7 @@ var app = {
       success: function (data) {
         var message = data.results;
         for(var i = 0; i < message.length; i++){
-          message[i].username = app.tagCheck(message[i].username);
-          message[i].text = app.tagCheck(message[i].text);
-          $("#chats").append("<li>" + "<h4><b>" + message[i].username + ": </b></h4><font size = '3'> " + message[i].text + "</font></li>");
+          app.addMessage(message[i]);
         }
        },
        error: function (data) {
@@ -69,8 +67,10 @@ var app = {
   },
 
   addMessage: function(message){
-    $("#chats").append("<li>" + message.text + "</li>");
-    app.send(message);
+    console.log(message);
+    message.username = app.tagCheck(message.username);
+    message.text = app.tagCheck(message.text);
+    $("#chats").append("<li>" + "<h4><b>" + message.username + ": </b></h4><font size = '3'> " + message.text + "</font></li>");
   }
 };
 
