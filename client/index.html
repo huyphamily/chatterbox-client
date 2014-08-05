@@ -30,9 +30,10 @@
         app.send({
             username: window.location.href.split("=")[1],
             text: $(".draft").val(),
-            roomname: "default"
+            roomname: app.roomname
           });
-          $(".draft").val("");
+        console.log(app.roomname);
+        $(".draft").val("");
       };
 
       $("body").on("keypress", function(event){
@@ -54,6 +55,10 @@
       <!-- Your HTML goes here! -->
       <input class="draft" type="text"> <button id="send">Send</button>
       <ul id="chats"></ul>
+    </div>
+    <div id="sidebar">
+      <h3>Chat Rooms</h3>
+      <ul id="roomSelect"></ul>
     </div>
   </body>
 </html>

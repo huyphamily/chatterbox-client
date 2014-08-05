@@ -3,6 +3,8 @@ var app = {
 
   server: 'https://api.parse.com/1/classes/chatterbox',
 
+  roomname: "blah",
+
   init: function(){},
 
   send: function(message){
@@ -27,11 +29,12 @@ var app = {
       url: app.server,
       type: 'GET',
       data: {
-        limit: 30,
+        limit: 100,
         order: "-createdAt"
       },
       contentType: 'application/json',
       success: function (data) {
+        console.log(data);
         var message = data.results;
         for(var i = 0; i < message.length; i++){
           app.addMessage(message[i]);
@@ -47,10 +50,15 @@ var app = {
   //check for script tags that can break your chat
   tagCheck: function(input){
     if(typeof input === "string"){
-      var tagPosition = input.search("<script>");
-      if( tagPosition !== -1 ){
-        input = input.replace("<script>", "");
-        input = input.replace("</script>", "");
+      if(input.length > 140){
+        input = input.slice(0,140);
+      }
+      var lower = input.toLowerCase();
+      var tagPosition = lower.search("<script>");
+      if( tagPosition !== -1){
+        // input = input.replace("<script>", "");
+        // input = input.replace("</script>", "");
+        input = "INVALID INPUT";
       }
       for(var i = 0; i < input.length; i++){
         var character = input.charCodeAt(i);
@@ -67,10 +75,31 @@ var app = {
   },
 
   addMessage: function(message){
-    console.log(message);
     message.username = app.tagCheck(message.username);
     message.text = app.tagCheck(message.text);
+    app.addRoom(message.roomname);
+
     $("#chats").append("<li>" + "<h4><b>" + message.username + ": </b></h4><font size = '3'> " + message.text + "</font></li>");
+  },
+
+  addRoom: function(room){
+    room = app.tagCheck(room);
+    if(typeof room === "string" && room.length > 0){
+      room = room.toLowerCase();
+
+      $("#roomSelect").append("<p><a href='#' class='roomLinks'>" + room + "</a></p>");
+      
+      app.seen = {};
+
+      $('.roomLinks').each(function() {
+        var txt = $(this).text();
+        if (app.seen[txt]){
+          $(this).parent().remove();
+        } else {
+          app.seen[txt] = true;
+        }
+      });
+    }
   }
 };
 

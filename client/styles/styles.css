@@ -82,3 +82,20 @@ form input[type=text] {
 .spinner img {
     padding: 10px;
 }
+
+div {display: 
+    inline-block;}
+
+#sidebar {
+    background: white;
+    height: 750px;
+    width: 300px;
+    float: right;
+    position: fixed;
+    margin-left: 50px;
+}
+
+p{
+    text-align: left;
+    
+}
