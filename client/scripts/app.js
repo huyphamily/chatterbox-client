@@ -27,7 +27,7 @@ var app = {
       url: app.server,
       type: 'GET',
       data: {
-        limit: 300,
+        limit: 30,
         order: "-createdAt"
       },
       contentType: 'application/json',
@@ -36,7 +36,7 @@ var app = {
         for(var i = 0; i < message.length; i++){
           message[i].username = app.tagCheck(message[i].username);
           message[i].text = app.tagCheck(message[i].text);
-          $("#chats").append("<li>" + "<h3><b>" + message[i].username + ": </b></h3> " + message[i].text + "</li>");
+          $("#chats").append("<li>" + "<h4><b>" + message[i].username + ": </b></h4><font size = '3'> " + message[i].text + "</font></li>");
         }
        },
        error: function (data) {
@@ -66,8 +66,14 @@ var app = {
 
   clearMessages: function(){
     $("#chats").children().remove();
+  },
+
+  addMessage: function(message){
+    $("#chats").append("<li>" + message.text + "</li>");
+    app.send(message);
   }
 };
+
 
 /*
 

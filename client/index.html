@@ -16,18 +16,43 @@
 
     <script>
     $(document).ready(function() {
+
+      //load initial messages
       app.fetch();
+      //refresh messages
       setInterval(function(){
         app.clearMessages();
         app.fetch();
       }, 15000);
+      //sen messages
+
+      var sendMessage = function(){
+        app.send({
+            username: window.location.href.split("=")[1],
+            text: $(".draft").val(),
+            roomname: "default"
+          });
+          $(".draft").val("");
+      };
+
+      $("body").on("keypress", function(event){
+        if(event.which === 13 ){
+          sendMessage();
+        }
+      });
+
+      $("#send").on("click", function(){
+        sendMessage();
+      });
+
+
     });
     </script>
 
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
-      <input class="draft" type="text"> <button class="send">Send</button>
+      <input class="draft" type="text"> <button id="send">Send</button>
       <ul id="chats"></ul>
     </div>
   </body>
