@@ -5,7 +5,9 @@ var app = {
 
   roomname: "Lobby",
 
-  init: function(){},
+  init: function(){
+    app.fetch();
+  },
 
   send: function(message){
     $.ajax({
@@ -83,8 +85,14 @@ var app = {
     message.username = app.tagCheck(message.username);
     message.text = app.tagCheck(message.text);
     app.addRoom(message.roomname);
+    var messageBody;
+    if( app.friends.hasOwnProperty(message.username) ){
+      messageBody = "<font size = '4'><b> " + message.text + "</b></font></li>";
+    } else{
+      messageBody = "<font size = '3'> " + message.text + "</font></li>";
+    }
 
-    $("#chats").append("<li>" + "<h4><b>" + message.username + ": </b></h4><font size = '3'> " + message.text + "</font></li>");
+    $("#chats").append("<li>" + "<h4 class ='username'><b>" + message.username + "</b></h4>" + messageBody);
     
     // $(".roomList").on("click", function(){
     //   console.log("hello");
@@ -126,6 +134,18 @@ var app = {
 
     }
     // if (messageObj.r)
+  },
+
+  friends: {},
+
+  addFriend : function(friend){
+    if( !app.friends.hasOwnProperty(friend) ){
+      var friendTag = "<h4 class='selectFriend'>"+ friend +"</h4>";
+      $("#friends").append(friendTag);
+      app.friends[friend] = true;
+    }
+    // $(friend).clone().appendTo("#friends");
+    //$("#friends").append()
   }
 };
 

@@ -58,10 +58,19 @@
         app.roomname = $(".roomText").val();
       });
 
+      $("body").on("click", ".username", function(){
+        var text = $(this).text();
+        // console.log( text );
+        // console.log ( $("#friends:contains(wawa)") );
+        //if( $("#friends").find("") === -1 )
+        //or .name?
+        
+        app.addFriend(text);
+        });
+
 
     });
     </script>
-
     <div id="main">
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
@@ -73,6 +82,8 @@
     <div id="sidebar">
       <h3>Chat Rooms</h3>
       <ul id="roomSelect"></ul>
+      <h3>Friends</h3>
+      <ul id="friends"></ul>
     </div>
   </body>
 </html>
