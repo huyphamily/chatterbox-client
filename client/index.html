@@ -13,18 +13,18 @@
     <script src="scripts/app.js"></script>
   </head>
   <body>
-
     <script>
     $(document).ready(function() {
 
       //load initial messages
       app.fetch();
       //refresh messages
-      setInterval(function(){
-        app.clearMessages();
-        app.fetch();
-      }, 15000);
-      //sen messages
+      // setInterval(function(){
+      //   app.fetch();
+      // }, 15000);
+      //send messages
+
+      
 
       var sendMessage = function(){
         app.send({
@@ -46,6 +46,18 @@
         sendMessage();
       });
 
+      $("#refresh").on("click", function(){
+        app.fetch();
+      });
+
+      $("body").on("click", ".roomList", function(){
+        app.enterRoom(this.text);
+      });
+
+      $("#roomName").on("click", function(){
+        app.roomname = $(".roomText").val();
+      });
+
 
     });
     </script>
@@ -54,6 +66,8 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
       <input class="draft" type="text"> <button id="send">Send</button>
+      <button id="refresh">Refresh</button>
+      <br><input class="roomText" type="text"> <button id="roomName">Change to Room</button>
       <ul id="chats"></ul>
     </div>
     <div id="sidebar">

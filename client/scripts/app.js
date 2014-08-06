@@ -3,7 +3,7 @@ var app = {
 
   server: 'https://api.parse.com/1/classes/chatterbox',
 
-  roomname: "blah",
+  roomname: "Lobby",
 
   init: function(){},
 
@@ -24,17 +24,22 @@ var app = {
     });
   },
 
+  onScreenMessages: {},
+
   fetch: function(){
     $.ajax({
       url: app.server,
       type: 'GET',
       data: {
-        limit: 100,
+        limit: 50,
         order: "-createdAt"
       },
       contentType: 'application/json',
       success: function (data) {
         console.log(data);
+        //add data to messages prop for room filtering
+        app.onScreenMessages = data.results;
+        app.clearMessages();
         var message = data.results;
         for(var i = 0; i < message.length; i++){
           app.addMessage(message[i]);
@@ -80,6 +85,10 @@ var app = {
     app.addRoom(message.roomname);
 
     $("#chats").append("<li>" + "<h4><b>" + message.username + ": </b></h4><font size = '3'> " + message.text + "</font></li>");
+    
+    // $(".roomList").on("click", function(){
+    //   console.log("hello");
+    // });
   },
 
   addRoom: function(room){
@@ -87,11 +96,11 @@ var app = {
     if(typeof room === "string" && room.length > 0){
       room = room.toLowerCase();
 
-      $("#roomSelect").append("<p><a href='#' class='roomLinks'>" + room + "</a></p>");
-      
+      $("#roomSelect").append("<p><a href='#' class='roomList' id='"+ room +"'>" + room + "</a></p>");
+
       app.seen = {};
 
-      $('.roomLinks').each(function() {
+      $('.roomList').each(function() {
         var txt = $(this).text();
         if (app.seen[txt]){
           $(this).parent().remove();
@@ -100,6 +109,23 @@ var app = {
         }
       });
     }
+  },
+
+  enterRoom: function(room){
+    console.log(app.onScreenMessages);
+    app.clearMessages();
+    //for loop
+    for ( var i = 0; i < app.onScreenMessages.length; i++ ){
+    //intermediate variable 
+    var messageObj = app.onScreenMessages[i];
+    var objRoom = messageObj.roomname;
+    objRoom = app.tagCheck(objRoom);
+    if (objRoom === room){
+      app.addMessage(messageObj);
+    }
+
+    }
+    // if (messageObj.r)
   }
 };
 
